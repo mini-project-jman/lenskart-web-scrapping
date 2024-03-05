@@ -1,0 +1,23 @@
+{
+	"name": "dataset_lenskart_customers_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_raw_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "customers.csv",
+				"container": "lenskardata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

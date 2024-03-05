@@ -1,0 +1,16 @@
+{
+	"name": "transactions_data_azure_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_lenskart_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "transactions"
+		}
+	}
+}
