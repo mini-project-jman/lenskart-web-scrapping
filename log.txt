@@ -1,0 +1,6 @@
+Session started at "17:14:13"
+requested powerGlass api and got response at "17:14:13"
+Json loaded from response at "17:14:13"
+Data appended at "17:14:14"
+data appended to csv file "PowerGlasses_scrap.csv" at "17:14:14"
+Session closed at "17:14:14"
