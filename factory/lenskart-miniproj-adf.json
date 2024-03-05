@@ -1,0 +1,9 @@
+{
+	"name": "lenskart-miniproj-adf",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "5cec8385-b13f-4c8f-8da0-cf8b9522e0a1",
+		"tenantId": "2800c0a0-70e9-49be-8733-faeaa6aced99"
+	}
+}
