@@ -1,0 +1,23 @@
+{
+	"name": "dataset_customer_reviews",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_raw_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "all_customers_reviews.csv",
+				"container": "lenskardata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
