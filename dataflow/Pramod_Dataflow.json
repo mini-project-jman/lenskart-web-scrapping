@@ -5,14 +5,102 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "dataset_transactionRefiendSQL",
+						"type": "DatasetReference"
+					},
 					"name": "transactionsRefined"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_productsRefined_transform",
+						"type": "DatasetReference"
+					},
+					"name": "ProductsRefined2"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "TransactionProductsJoin",
+					"description": "Transaction table left join ProductsRefined"
+				},
+				{
+					"name": "groupbyAndAggregates",
+					"description": "Group by YEAR(transaction_date)"
+				},
+				{
+					"name": "orderbysalesyear",
+					"description": "Order By sales_year"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> transactionsRefined"
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactionsRefined",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductsRefined2",
+				"transactionsRefined, ProductsRefined2 join(product_id === id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> TransactionProductsJoin",
+				"TransactionProductsJoin aggregate(groupBy(Sales_year = year(transaction_date)),",
+				"     Total_revenue = sum(Lenskart_Price),",
+				"          quantity = sum(quantity),",
+				"          transaction_id = count(transaction_id),",
+				"          customer_id = countDistinct(customer_id),",
+				"          product_id = countDistinct(product_id)) ~> groupbyAndAggregates",
+				"groupbyAndAggregates sort(desc(Sales_year, true)) ~> orderbysalesyear",
+				"orderbysalesyear sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
