@@ -320,8 +320,7 @@
 									"Transactions": {},
 									"ProductFined": {},
 									"TransactionsFined": {}
-								},
-								"linkedServiceParameters": {}
+								}
 							},
 							"staging": {},
 							"compute": {
@@ -857,6 +856,27 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/TransactionREfinedASQL')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_lenskart_db",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "TransactionsRefined"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_lenskart_db')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/customers_data_azure_sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1248,6 +1268,166 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/productas')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_lenskart_db",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "product_url",
+						"type": "nvarchar"
+					},
+					{
+						"name": "color",
+						"type": "nvarchar"
+					},
+					{
+						"name": "size",
+						"type": "nvarchar"
+					},
+					{
+						"name": "width",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "brand_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "brand_name_en",
+						"type": "nvarchar"
+					},
+					{
+						"name": "model_name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "is_tbyb",
+						"type": "nvarchar"
+					},
+					{
+						"name": "tags",
+						"type": "nvarchar"
+					},
+					{
+						"name": "is_ditto",
+						"type": "nvarchar"
+					},
+					{
+						"name": "classification",
+						"type": "nvarchar"
+					},
+					{
+						"name": "specifications",
+						"type": "nvarchar"
+					},
+					{
+						"name": "wishlistCount",
+						"type": "nvarchar"
+					},
+					{
+						"name": "purchaseCount",
+						"type": "nvarchar"
+					},
+					{
+						"name": "avgRating",
+						"type": "nvarchar"
+					},
+					{
+						"name": "totalNoOfRatings",
+						"type": "nvarchar"
+					},
+					{
+						"name": "hashtagList",
+						"type": "nvarchar"
+					},
+					{
+						"name": "offerName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "cmsLinkIos",
+						"type": "nvarchar"
+					},
+					{
+						"name": "qty",
+						"type": "nvarchar"
+					},
+					{
+						"name": "subCollection",
+						"type": "nvarchar"
+					},
+					{
+						"name": "subCollectionId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "isCygnusEnabled",
+						"type": "nvarchar"
+					},
+					{
+						"name": "isCashbackApplicable",
+						"type": "nvarchar"
+					},
+					{
+						"name": "searchProductName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Market_Price",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Lenskart_Price",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Discount_Percentage",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "ProducrtsRefined"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_lenskart_db')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/productsRefinedAZuresA')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_lenskart_db",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "ProducrtsRefined"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_lenskart_db')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/raw_data_azure_sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1554,6 +1734,49 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/transactionrefined')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "ls_azure_sql_lenskart_db",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "customer_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "product_id",
+						"type": "nvarchar"
+					},
+					{
+						"name": "quantity",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "transaction_date",
+						"type": "date"
+					},
+					{
+						"name": "transaction_id",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "raw",
+					"table": "TransactionsRefined"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_lenskart_db')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/transactions_data_azure_sql')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1698,7 +1921,35 @@
 						"     isolationLevel: 'READ_UNCOMMITTED',",
 						"     format: 'table') ~> Transactions",
 						"WidthInMM cast(output(",
-						"          width as integer",
+						"          id as string,",
+						"          product_url as string,",
+						"          color as string,",
+						"          size as string,",
+						"          width as integer,",
+						"          brand_name as string,",
+						"          brand_name_en as string,",
+						"          model_name as string,",
+						"          is_tbyb as boolean,",
+						"          tags as string,",
+						"          is_ditto as boolean,",
+						"          classification as string,",
+						"          specifications as string,",
+						"          wishlistCount as integer,",
+						"          purchaseCount as integer,",
+						"          avgRating as integer,",
+						"          totalNoOfRatings as integer,",
+						"          hashtagList as string,",
+						"          offerName as string,",
+						"          cmsLinkIos as string,",
+						"          qty as integer,",
+						"          subCollection as string,",
+						"          subCollectionId as string,",
+						"          isCygnusEnabled as boolean,",
+						"          isCashbackApplicable as boolean,",
+						"          searchProductName as string,",
+						"          Market_Price as integer,",
+						"          Lenskart_Price as integer,",
+						"          Discount_Percentage as integer",
 						"     ),",
 						"     errors: true) ~> TypeCasting",
 						"ProductDetails derive(width = replace(width, 'mm', '')) ~> WidthInMM",
@@ -1735,48 +1986,6 @@
 				"[concat(variables('factoryId'), '/datasets/Transaction')]",
 				"[concat(variables('factoryId'), '/datasets/productsRefinedAZuresA')]",
 				"[concat(variables('factoryId'), '/datasets/TransactionREfinedASQL')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/productsRefinedAZuresA')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sql_lenskart_db",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "raw",
-					"table": "ProducrtsRefined"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_lenskart_db')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/TransactionREfinedASQL')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "ls_azure_sql_lenskart_db",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "raw",
-					"table": "TransactionsRefined"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/ls_azure_sql_lenskart_db')]"
 			]
 		}
 	]
