@@ -47,6 +47,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "BestCategoryBasedOnReview"
+				},
+				{
+					"dataset": {
+						"referenceName": "ProductsDeletedFromLenskart",
+						"type": "DatasetReference"
+					},
+					"name": "ProductsDeletedFromLensKart"
 				}
 			],
 			"transformations": [
@@ -233,7 +240,20 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> BestCategoryBasedOnReview"
+				"     errorHandlingOption: 'stopOnFirstError') ~> BestCategoryBasedOnReview",
+				"nullValuesSplit@nullVals sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          product_id",
+				"     )) ~> ProductsDeletedFromLensKart"
 			]
 		}
 	}

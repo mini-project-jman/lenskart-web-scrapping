@@ -9,7 +9,7 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "arjun",
+			"schema": "Reports",
 			"table": "BestProductBasedOnReview"
 		}
 	}
