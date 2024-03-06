@@ -1,0 +1,89 @@
+{
+	"name": "mostwanted",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Transaction",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "productas",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "join1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as string,",
+				"          tags as string,",
+				"          is_ditto as string,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as string,",
+				"          purchaseCount as string,",
+				"          avgRating as string,",
+				"          totalNoOfRatings as string,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as string,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as string,",
+				"          isCashbackApplicable as string,",
+				"          searchProductName as string,",
+				"          Market_Price as string,",
+				"          Lenskart_Price as string,",
+				"          Discount_Percentage as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source1, source2 join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 aggregate(groupBy(brand_name,",
+				"          classification),",
+				"     NoOfProduct = count(transaction_id)) ~> aggregate1"
+			]
+		}
+	}
+}
