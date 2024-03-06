@@ -6,49 +6,406 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "transactions_data_azure_sql",
+						"referenceName": "productas",
 						"type": "DatasetReference"
 					},
-					"name": "CustomerTransactions"
-				}
-			],
-			"sinks": [
+					"name": "Products"
+				},
 				{
 					"dataset": {
-						"referenceName": "customer_purchase_history",
+						"referenceName": "transactionrefined",
 						"type": "DatasetReference"
 					},
-					"name": "customerpurchasehistory"
+					"name": "Transactions"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable11",
+						"type": "DatasetReference"
+					},
+					"name": "ProductsRevenueHigh"
+				},
+				{
+					"dataset": {
+						"referenceName": "Customer",
+						"type": "DatasetReference"
+					},
+					"name": "Customers"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable11",
+						"type": "DatasetReference"
+					},
+					"name": "products1"
+				},
+				{
+					"dataset": {
+						"referenceName": "transactionrefined",
+						"type": "DatasetReference"
+					},
+					"name": "Transactions1"
+				},
+				{
+					"name": "SOURCE"
+				},
+				{
+					"dataset": {
+						"referenceName": "transactionrefined",
+						"type": "DatasetReference"
+					},
+					"name": "Transactions2"
 				}
 			],
+			"sinks": [],
 			"transformations": [
 				{
-					"name": "purchasehistory"
+					"name": "QtyofEachproduct"
+				},
+				{
+					"name": "transaction"
+				},
+				{
+					"name": "Categoryfield"
+				},
+				{
+					"name": "SoldTotalQtyCategory"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "ptdQtyyDetails"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "SoldRevenueByCategory"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "QtyproductBought"
+				},
+				{
+					"name": "join3"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "derivedColumn2"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "joinProductDetail"
+				},
+				{
+					"name": "NecessaryFieldsGroupByMonth"
+				},
+				{
+					"name": "addYearMonth"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "aggregate3"
+				},
+				{
+					"name": "aggregate4"
+				},
+				{
+					"name": "aggregate5"
+				},
+				{
+					"name": "join4"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "derivedColumn4"
+				},
+				{
+					"name": "aggregate6"
 				}
 			],
 			"scriptLines": [
 				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as string,",
+				"          tags as string,",
+				"          is_ditto as string,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as string,",
+				"          purchaseCount as string,",
+				"          avgRating as string,",
+				"          totalNoOfRatings as string,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as string,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as string,",
+				"          isCashbackApplicable as string,",
+				"          searchProductName as string,",
+				"          Market_Price as string,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Products",
+				"source(output(",
 				"          customer_id as string,",
 				"          product_id as string,",
-				"          quantity as string,",
-				"          transaction_date as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
 				"          transaction_id as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> CustomerTransactions",
-				"CustomerTransactions sort(desc(quantity, false)) ~> purchasehistory",
-				"purchasehistory sink(allowSchemaDrift: true,",
+				"     format: 'table') ~> Transactions",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductsRevenueHigh",
+				"source(output(",
+				"          customer_id as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          email as string,",
+				"          phone_number as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Customers",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> products1",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Transactions1",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> SOURCE",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Transactions2",
+				"Transactions aggregate(groupBy(product_id),",
+				"     TotalQuantity = sum(quantity)) ~> QtyofEachproduct",
+				"Products, QtyofEachproduct join(id == product_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> transaction",
+				"transaction select(mapColumn(",
+				"          classification,",
+				"          TotalQuantity",
+				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> customerpurchasehistory"
+				"     skipDuplicateMapOutputs: true) ~> Categoryfield",
+				"Categoryfield aggregate(groupBy(classification),",
+				"     TotalQuantity = sum(TotalQuantity)) ~> SoldTotalQtyCategory",
+				"ProductsRevenueHigh, QtyofEachproduct join(id == product_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1 select(mapColumn(",
+				"          classification,",
+				"          Lenskart_Price,",
+				"          TotalQuantity",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> ptdQtyyDetails",
+				"ptdQtyyDetails derive(Revenue = Lenskart_Price*TotalQuantity) ~> derivedColumn1",
+				"derivedColumn1 aggregate(groupBy(classification),",
+				"     TotalRevenue = sum(Revenue)) ~> SoldRevenueByCategory",
+				"Customers, Transactions join(Customers@customer_id == Transactions@customer_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2 select(mapColumn(",
+				"          customer_id = Transactions@customer_id,",
+				"          first_name,",
+				"          last_name,",
+				"          email,",
+				"          phone_number,",
+				"          address,",
+				"          product_id",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 aggregate(groupBy(customer_id,",
+				"          first_name,",
+				"          last_name,",
+				"          phone_number),",
+				"     No_of_Products = count(product_id)) ~> aggregate2",
+				"aggregate2 sort(desc(No_of_Products, true)) ~> QtyproductBought",
+				"products1, QtyofEachproduct join(id == product_id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join3",
+				"join3 select(mapColumn(",
+				"          id,",
+				"          product_url,",
+				"          color,",
+				"          size,",
+				"          width,",
+				"          brand_name,",
+				"          Lenskart_Price,",
+				"          TotalQuantity",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(TotalRevenue = Lenskart_Price*TotalQuantity) ~> derivedColumn2",
+				"derivedColumn2 sort(desc(TotalQuantity, true)) ~> sort1",
+				"Transactions1, Products join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joinProductDetail",
+				"joinProductDetail select(mapColumn(",
+				"          customer_id,",
+				"          product_id,",
+				"          quantity,",
+				"          transaction_date,",
+				"          brand_name,",
+				"          Lenskart_Price",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> NecessaryFieldsGroupByMonth",
+				"NecessaryFieldsGroupByMonth derive(Revenue = quantity*Lenskart_Price,",
+				"          Year = year(transaction_date),",
+				"          Month = month(transaction_date)) ~> addYearMonth",
+				"NecessaryFieldsGroupByMonth derive(Year = year(transaction_date),",
+				"          Revenue = quantity*Lenskart_Price) ~> derivedColumn3",
+				"addYearMonth aggregate(groupBy(Year,",
+				"          Month),",
+				"     TotalRevenue = sum(Revenue)) ~> aggregate3",
+				"derivedColumn3 aggregate(groupBy(Year),",
+				"     TotalYearlyRevenue = sum(Revenue)) ~> aggregate4",
+				"addYearMonth aggregate(groupBy(Month),",
+				"     TotalMonthlyRevenue = sum(Revenue)) ~> aggregate5",
+				"Transactions2, Products join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join4",
+				"join4 select(mapColumn(",
+				"          quantity,",
+				"          transaction_date",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select3 derive(transaction_date = year(transaction_date)) ~> derivedColumn4",
+				"derivedColumn4 aggregate(groupBy(transaction_date),",
+				"     TotalProducts = sum(quantity)) ~> aggregate6"
 			]
 		}
 	}
