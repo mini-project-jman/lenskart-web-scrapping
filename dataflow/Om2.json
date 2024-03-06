@@ -1,0 +1,170 @@
+{
+	"name": "Om2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "productas",
+						"type": "DatasetReference"
+					},
+					"name": "Product"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_customer_reviews_azure_sql",
+						"type": "DatasetReference"
+					},
+					"name": "CustomerReviews"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "HighestWishlistCount",
+						"type": "DatasetReference"
+					},
+					"name": "HighestWishlistCount"
+				},
+				{
+					"dataset": {
+						"referenceName": "CustomerReviewsUsingProductId",
+						"type": "DatasetReference"
+					},
+					"name": "CustomerReviewsUsingProductId"
+				}
+			],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "JoiningProductDetails"
+				},
+				{
+					"name": "select2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as integer,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as string,",
+				"          tags as string,",
+				"          is_ditto as string,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as string,",
+				"          avgRating as string,",
+				"          totalNoOfRatings as string,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as string,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as string,",
+				"          isCashbackApplicable as string,",
+				"          searchProductName as string,",
+				"          Market_Price as string,",
+				"          Lenskart_Price as string,",
+				"          Discount_Percentage as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Product",
+				"source(output(",
+				"          productId as integer,",
+				"          reviewee as string,",
+				"          noOfStars as integer,",
+				"          reviewDetail as string,",
+				"          reviewDate as date,",
+				"          reviewTitle as string,",
+				"          reviewId as integer,",
+				"          reviewerType as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> CustomerReviews",
+				"Product select(mapColumn(",
+				"          id,",
+				"          product_url,",
+				"          brand_name,",
+				"          model_name,",
+				"          classification,",
+				"          wishlistCount,",
+				"          avgRating,",
+				"          isCashbackApplicable,",
+				"          Lenskart_Price",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"select1 sort(desc(wishlistCount, true)) ~> sort1",
+				"CustomerReviews, Product join(productId == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> JoiningProductDetails",
+				"JoiningProductDetails select(mapColumn(",
+				"          productId,",
+				"          brand_name,",
+				"          model_name,",
+				"          reviewId,",
+				"          reviewee,",
+				"          reviewTitle,",
+				"          reviewDetail,",
+				"          noOfStars,",
+				"          reviewDate,",
+				"          reviewerType,",
+				"          classification,",
+				"          Lenskart_Price",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          id as string,",
+				"          brand_name as string,",
+				"          model_name as string,",
+				"          classification as string,",
+				"          wishlistCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          Lenskart_Price as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> HighestWishlistCount",
+				"select2 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> CustomerReviewsUsingProductId"
+			]
+		}
+	}
+}

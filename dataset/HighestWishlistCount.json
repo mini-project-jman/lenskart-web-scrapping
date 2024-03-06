@@ -1,0 +1,53 @@
+{
+	"name": "HighestWishlistCount",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_lenskart_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "model_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "wishlistCount",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "avgRating",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "totalNoOfRatings",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Lenskart_Price",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "Reports",
+			"table": "MostWishedProduct"
+		}
+	}
+}
