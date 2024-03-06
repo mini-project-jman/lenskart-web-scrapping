@@ -10,9 +10,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "ProuctSource"
-				},
-				{
-					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -26,6 +23,13 @@
 						"referenceName": "ls_lenskart_raw_blob",
 						"type": "LinkedServiceReference"
 					}
+				},
+				{
+					"dataset": {
+						"referenceName": "total_sale_of_brands",
+						"type": "DatasetReference"
+					},
+					"name": "totalSaleOfBrands"
 				}
 			],
 			"transformations": [
@@ -81,8 +85,6 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProuctSource",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1",
 				"ProuctSource aggregate(groupBy(brand_name),",
 				"     tot_purchaseCount = sum(purchaseCount)) ~> BrandAggregation",
 				"BrandAggregation cast(output(",
@@ -107,7 +109,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> TopSellingBrandOnCount"
+				"     errorHandlingOption: 'stopOnFirstError') ~> TopSellingBrandOnCount",
+				"BrandRanking sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> totalSaleOfBrands"
 			]
 		}
 	}
