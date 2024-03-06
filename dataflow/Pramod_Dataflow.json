@@ -264,7 +264,7 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductsRefined2",
-				"transactionsRefined, ProductsRefined join(product_id === id,",
+				"transactionsRefined, ProductsRefined join(product_id == id,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
