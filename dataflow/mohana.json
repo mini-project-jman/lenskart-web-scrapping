@@ -10,6 +10,9 @@
 						"type": "DatasetReference"
 					},
 					"name": "ProuctSource"
+				},
+				{
+					"name": "source1"
 				}
 			],
 			"sinks": [
@@ -78,6 +81,8 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProuctSource",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source1",
 				"ProuctSource aggregate(groupBy(brand_name),",
 				"     tot_purchaseCount = sum(purchaseCount)) ~> BrandAggregation",
 				"BrandAggregation cast(output(",
