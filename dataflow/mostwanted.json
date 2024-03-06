@@ -19,7 +19,15 @@
 					"name": "source2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "categorization",
+						"type": "DatasetReference"
+					},
+					"name": "finaloutput"
+				}
+			],
 			"transformations": [
 				{
 					"name": "join1"
@@ -82,7 +90,22 @@
 				"     broadcast: 'auto')~> join1",
 				"join1 aggregate(groupBy(brand_name,",
 				"          classification),",
-				"     NoOfProduct = count(transaction_id)) ~> aggregate1"
+				"     NoOfProduct = count(transaction_id)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          brand_name,",
+				"          classification,",
+				"          NoOfProduct",
+				"     )) ~> finaloutput"
 			]
 		}
 	}
