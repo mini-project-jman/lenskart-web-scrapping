@@ -6,107 +6,49 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "productas",
+						"referenceName": "transactions_data_azure_sql",
 						"type": "DatasetReference"
 					},
-					"name": "Products"
-				},
-				{
-					"dataset": {
-						"referenceName": "transactionrefined",
-						"type": "DatasetReference"
-					},
-					"name": "Transactions"
+					"name": "CustomerTransactions"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "customer_purchase_history",
+						"type": "DatasetReference"
+					},
+					"name": "customerpurchasehistory"
+				}
+			],
 			"transformations": [
 				{
-					"name": "QtyofEachproduct"
-				},
-				{
-					"name": "transaction"
-				},
-				{
-					"name": "Categoryfield"
-				},
-				{
-					"name": "SoldTotalQtyCategory"
-				},
-				{
-					"name": "join1"
+					"name": "purchasehistory"
 				}
 			],
 			"scriptLines": [
-				"parameters{",
-				"     parameter1 as string",
-				"}",
-				"source(output(",
-				"          id as string,",
-				"          product_url as string,",
-				"          color as string,",
-				"          size as string,",
-				"          width as integer,",
-				"          brand_name as string,",
-				"          brand_name_en as string,",
-				"          model_name as string,",
-				"          is_tbyb as string,",
-				"          tags as string,",
-				"          is_ditto as string,",
-				"          classification as string,",
-				"          specifications as string,",
-				"          wishlistCount as string,",
-				"          purchaseCount as string,",
-				"          avgRating as string,",
-				"          totalNoOfRatings as string,",
-				"          hashtagList as string,",
-				"          offerName as string,",
-				"          cmsLinkIos as string,",
-				"          qty as string,",
-				"          subCollection as string,",
-				"          subCollectionId as string,",
-				"          isCygnusEnabled as string,",
-				"          isCashbackApplicable as string,",
-				"          searchProductName as string,",
-				"          Market_Price as string,",
-				"          Lenskart_Price as string,",
-				"          Discount_Percentage as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Products",
 				"source(output(",
 				"          customer_id as string,",
 				"          product_id as string,",
-				"          quantity as integer,",
-				"          transaction_date as date,",
+				"          quantity as string,",
+				"          transaction_date as string,",
 				"          transaction_id as string",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> Transactions",
-				"Transactions aggregate(groupBy(product_id),",
-				"     TotalQuantity = sum(quantity)) ~> QtyofEachproduct",
-				"Products, QtyofEachproduct join(id == product_id,",
-				"     joinType:'inner',",
-				"     matchType:'exact',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> transaction",
-				"transaction select(mapColumn(",
-				"          classification,",
-				"          TotalQuantity",
-				"     ),",
+				"     format: 'table') ~> CustomerTransactions",
+				"CustomerTransactions sort(desc(quantity, false)) ~> purchasehistory",
+				"purchasehistory sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> Categoryfield",
-				"Categoryfield aggregate(groupBy(classification),",
-				"     TotalQuantity = sum(TotalQuantity)) ~> SoldTotalQtyCategory",
-				"QtyofEachproduct, Products join(product_id == id,",
-				"     joinType:'inner',",
-				"     matchType:'exact',",
-				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> customerpurchasehistory"
 			]
 		}
 	}
