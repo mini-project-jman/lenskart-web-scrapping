@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "productCast",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -102,8 +102,7 @@
 				"     validateSchema: false,",
 				"     partitionFileNames:['product_details_casted'],",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1"
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
