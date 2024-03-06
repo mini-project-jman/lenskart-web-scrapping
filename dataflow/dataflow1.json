@@ -16,7 +16,14 @@
 						"referenceName": "AzureSqlTable3",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "CustomerDetails"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable4",
+						"type": "DatasetReference"
+					},
+					"name": "Transactions"
 				}
 			],
 			"sinks": [],
@@ -29,6 +36,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "TypeCastingDateQty"
 				}
 			],
 			"scriptLines": [
@@ -78,7 +88,18 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1",
+				"     format: 'table') ~> CustomerDetails",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Transactions",
 				"WidthInMM cast(output(",
 				"          id as string,",
 				"          product_url as string,",
@@ -111,8 +132,14 @@
 				"          Discount_Percentage as integer",
 				"     ),",
 				"     errors: true) ~> TypeCasting",
-				"ProductDetails derive(width = replace(width, 'mm', '')) ~> WidthInMM",
-				"TypeCasting derive() ~> derivedColumn1"
+				"ProductDetails derive(width = replace(width, 'mm', ''),",
+				"          specifications = ERROR_FUNCTION('')) ~> WidthInMM",
+				"TypeCasting derive() ~> derivedColumn1",
+				"Transactions cast(output(",
+				"          quantity as integer,",
+				"          transaction_date as date",
+				"     ),",
+				"     errors: true) ~> TypeCastingDateQty"
 			]
 		}
 	}
