@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable13",
+	"name": "MaxRevenueMonthYear",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "Reports",
-			"table": "Sales_by_Year"
+			"table": "MaxRevenue_Month_Year"
 		}
 	}
 }

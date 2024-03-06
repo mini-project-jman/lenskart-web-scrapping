@@ -16,12 +16,65 @@
 						"referenceName": "dataset_productsRefined_transform",
 						"type": "DatasetReference"
 					},
-					"name": "ProductsRefined2"
+					"name": "ProductsRefined"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_transactionRefiendSQL",
+						"type": "DatasetReference"
+					},
+					"name": "transactionsRefined1",
+					"description": "Import data from dataset_transactionRefiendSQL"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_productsRefined_transform",
+						"type": "DatasetReference"
+					},
+					"name": "ProductsRefined1",
+					"description": "Import data from dataset_productsRefined_transform"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_transactionRefiendSQL",
+						"type": "DatasetReference"
+					},
+					"name": "transactionsRefined2",
+					"description": "Import data from dataset_transactionRefiendSQL"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_productsRefined_transform",
+						"type": "DatasetReference"
+					},
+					"name": "ProductsRefined2",
+					"description": "Import data from dataset_productsRefined_transform"
 				}
 			],
 			"sinks": [
 				{
-					"name": "sink1"
+					"dataset": {
+						"referenceName": "AzureSqlTable13",
+						"type": "DatasetReference"
+					},
+					"name": "SalesbyYear",
+					"description": "Sales_by_Year Table"
+				},
+				{
+					"dataset": {
+						"referenceName": "Sales_by_Month",
+						"type": "DatasetReference"
+					},
+					"name": "SalesbyMonth",
+					"description": "Sales_by_Month Table"
+				},
+				{
+					"dataset": {
+						"referenceName": "MaxRevenueMonthYear",
+						"type": "DatasetReference"
+					},
+					"name": "MaxSalesinMonthandYear",
+					"description": "Max Sales in Month and Year"
 				}
 			],
 			"transformations": [
@@ -31,11 +84,45 @@
 				},
 				{
 					"name": "groupbyAndAggregates",
-					"description": "Group by YEAR(transaction_date)"
+					"description": "Group by YEAR(transaction_date) and Aggregates"
 				},
 				{
 					"name": "orderbysalesyear",
 					"description": "Order By sales_year"
+				},
+				{
+					"name": "TransactionProductsJoin1",
+					"description": "Transaction table left join ProductsRefined"
+				},
+				{
+					"name": "groupbyAndAggregates1",
+					"description": "Group by YEAR(transaction_date) and Month(transaction_date) and Aggregates"
+				},
+				{
+					"name": "orderbySalesYearAndMonth",
+					"description": "orderby Sales_Year desc And Sales_Month"
+				},
+				{
+					"name": "TransactionProductsJoin2",
+					"description": "Transaction table left join ProductsRefined"
+				},
+				{
+					"name": "groupby",
+					"description": "Group by YEAR(transaction_date) and Month(transaction_date) and Aggregates"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "joingroupbyAaggregte1"
+				},
+				{
+					"name": "orderbysalesyearDESC",
+					"description": "ORDER BY  sales_year DESC"
+				},
+				{
+					"name": "selectNecessaryFields",
+					"description": "select with columns 'Sales_year,  sales_month, total_revenue, total_products_sold'"
 				}
 			],
 			"scriptLines": [
@@ -84,23 +171,181 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductsRefined",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactionsRefined1",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductsRefined1",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactionsRefined2",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductsRefined2",
-				"transactionsRefined, ProductsRefined2 join(product_id === id,",
+				"transactionsRefined, ProductsRefined join(product_id === id,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> TransactionProductsJoin",
 				"TransactionProductsJoin aggregate(groupBy(Sales_year = year(transaction_date)),",
 				"     Total_revenue = sum(Lenskart_Price),",
-				"          quantity = sum(quantity),",
-				"          transaction_id = count(transaction_id),",
-				"          customer_id = countDistinct(customer_id),",
-				"          product_id = countDistinct(product_id)) ~> groupbyAndAggregates",
+				"          Total_quantities_sold = sum(quantity),",
+				"          total_transactions = count(transaction_id),",
+				"          Total_customers = countDistinct(customer_id),",
+				"          Total_products = countDistinct(product_id)) ~> groupbyAndAggregates",
 				"groupbyAndAggregates sort(desc(Sales_year, true)) ~> orderbysalesyear",
+				"transactionsRefined1, ProductsRefined1 join(product_id == id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> TransactionProductsJoin1",
+				"TransactionProductsJoin1 aggregate(groupBy(Sales_year = year(transaction_date),",
+				"          sales_month = month(transaction_date)),",
+				"     Total_revenue = sum(Lenskart_Price),",
+				"          Total_quantities_sold = sum(quantity),",
+				"          total_transactions = count(transaction_id),",
+				"          Total_customers = countDistinct(customer_id),",
+				"          Total_products = countDistinct(product_id)) ~> groupbyAndAggregates1",
+				"groupbyAndAggregates1 sort(desc(Sales_year, true),",
+				"     asc(sales_month, true)) ~> orderbySalesYearAndMonth",
+				"transactionsRefined2, ProductsRefined2 join(product_id == id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> TransactionProductsJoin2",
+				"TransactionProductsJoin2 aggregate(groupBy(Sales_year = year(transaction_date),",
+				"          sales_month = month(transaction_date)),",
+				"     total_revenue = sum(Lenskart_Price),",
+				"          total_products_sold = countDistinct(product_id)) ~> groupby",
+				"groupby aggregate(groupBy(Sales_year),",
+				"     max_revenue = max(total_revenue)) ~> aggregate1",
+				"aggregate1, groupby join(aggregate1@Sales_year == groupby@Sales_year",
+				"     && max_revenue == total_revenue,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joingroupbyAaggregte1",
+				"joingroupbyAaggregte1 sort(desc(groupby@Sales_year, true)) ~> orderbysalesyearDESC",
+				"orderbysalesyearDESC select(mapColumn(",
+				"          Sales_year = aggregate1@Sales_year,",
+				"          sales_month,",
+				"          total_revenue,",
+				"          total_products_sold",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectNecessaryFields",
 				"orderbysalesyear sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1"
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> SalesbyYear",
+				"orderbySalesYearAndMonth sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> SalesbyMonth",
+				"selectNecessaryFields sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> MaxSalesinMonthandYear"
 			]
 		}
 	}
