@@ -1,0 +1,19 @@
+{
+	"name": "Pramod_Dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"name": "transactionsRefined"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> transactionsRefined"
+			]
+		}
+	}
+}
