@@ -100,12 +100,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          brand_name,",
-				"          classification,",
-				"          NoOfProduct",
-				"     )) ~> finaloutput"
+				"     errorHandlingOption: 'stopOnFirstError') ~> finaloutput"
 			]
 		}
 	}
