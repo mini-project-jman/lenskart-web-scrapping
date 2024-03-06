@@ -6,14 +6,14 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable2",
+						"referenceName": "AzureSqlTable8",
 						"type": "DatasetReference"
 					},
 					"name": "ProductDetails"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable4",
+						"referenceName": "Transaction",
 						"type": "DatasetReference"
 					},
 					"name": "Transactions"
@@ -22,14 +22,14 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable5",
+						"referenceName": "AzureSqlTable9",
 						"type": "DatasetReference"
 					},
 					"name": "ProductFined"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable6",
+						"referenceName": "AzureSqlTable10",
 						"type": "DatasetReference"
 					},
 					"name": "TransactionsFined"
@@ -94,35 +94,7 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> Transactions",
 				"WidthInMM cast(output(",
-				"          id as string,",
-				"          product_url as string,",
-				"          color as string,",
-				"          size as string,",
-				"          width as integer,",
-				"          brand_name as string,",
-				"          brand_name_en as string,",
-				"          model_name as string,",
-				"          is_tbyb as boolean,",
-				"          tags as string,",
-				"          is_ditto as boolean,",
-				"          classification as string,",
-				"          specifications as string,",
-				"          wishlistCount as integer,",
-				"          purchaseCount as integer,",
-				"          avgRating as integer,",
-				"          totalNoOfRatings as integer,",
-				"          hashtagList as string,",
-				"          offerName as string,",
-				"          cmsLinkIos as string,",
-				"          qty as integer,",
-				"          subCollection as string,",
-				"          subCollectionId as string,",
-				"          isCygnusEnabled as boolean,",
-				"          isCashbackApplicable as boolean,",
-				"          searchProductName as string,",
-				"          Market_Price as integer,",
-				"          Lenskart_Price as integer,",
-				"          Discount_Percentage as integer",
+				"          width as integer",
 				"     ),",
 				"     errors: true) ~> TypeCasting",
 				"ProductDetails derive(width = replace(width, 'mm', '')) ~> WidthInMM",
