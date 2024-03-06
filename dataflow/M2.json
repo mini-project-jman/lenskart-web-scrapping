@@ -38,6 +38,18 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "cast1"
+				},
+				{
+					"name": "aggregate2"
+				},
+				{
+					"name": "derivedColumn1"
 				}
 			],
 			"scriptLines": [
@@ -94,6 +106,14 @@
 				"     broadcast: 'auto')~> ProductJoin",
 				"ProductJoin aggregate(groupBy(classification),",
 				"     quantity_sold = sum(quantity)) ~> aggregate1",
+				"cast1 filter(like(transaction_date,'2023%')) ~> filter1",
+				"ProductJoin cast(output(",
+				"          transaction_date as string",
+				"     ),",
+				"     errors: true) ~> cast1",
+				"derivedColumn1 aggregate(groupBy(transaction_date),",
+				"     Lenskart_Price = sum(Lenskart_Price)) ~> aggregate2",
+				"filter1 derive(transaction_date = substring(transaction_date,1,4)) ~> derivedColumn1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
