@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable4",
+	"name": "Transaction",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",

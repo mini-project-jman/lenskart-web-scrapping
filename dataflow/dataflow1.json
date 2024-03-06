@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable2",
+						"referenceName": "Product",
 						"type": "DatasetReference"
 					},
 					"name": "ProductDetails"
@@ -20,7 +20,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable4",
+						"referenceName": "Transaction",
 						"type": "DatasetReference"
 					},
 					"name": "Transactions"
