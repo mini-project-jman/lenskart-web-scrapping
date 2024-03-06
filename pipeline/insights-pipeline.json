@@ -159,7 +159,7 @@
 				}
 			},
 			{
-				"name": "Data flow1",
+				"name": "CustomerReviewsandWishcount",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
