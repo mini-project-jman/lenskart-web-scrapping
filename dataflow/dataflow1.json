@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "productas",
+						"referenceName": "AzureSqlTable12",
 						"type": "DatasetReference"
 					},
 					"name": "Products"
@@ -45,9 +45,6 @@
 						"type": "DatasetReference"
 					},
 					"name": "Transactions1"
-				},
-				{
-					"name": "SOURCE"
 				},
 				{
 					"dataset": {
@@ -105,7 +102,7 @@
 					"name": "derivedColumn2"
 				},
 				{
-					"name": "sort1"
+					"name": "ProductRevQty"
 				},
 				{
 					"name": "joinProductDetail"
@@ -123,10 +120,10 @@
 					"name": "aggregate3"
 				},
 				{
-					"name": "aggregate4"
+					"name": "TotalrevenueYearly"
 				},
 				{
-					"name": "aggregate5"
+					"name": "totalRevenueMonth"
 				},
 				{
 					"name": "join4"
@@ -138,7 +135,10 @@
 					"name": "derivedColumn4"
 				},
 				{
-					"name": "aggregate6"
+					"name": "TotalProductsPerYear"
+				},
+				{
+					"name": "RevenueMonthYear"
 				}
 			],
 			"scriptLines": [
@@ -151,27 +151,27 @@
 				"          brand_name as string,",
 				"          brand_name_en as string,",
 				"          model_name as string,",
-				"          is_tbyb as string,",
+				"          is_tbyb as boolean,",
 				"          tags as string,",
-				"          is_ditto as string,",
+				"          is_ditto as boolean,",
 				"          classification as string,",
 				"          specifications as string,",
-				"          wishlistCount as string,",
-				"          purchaseCount as string,",
-				"          avgRating as string,",
-				"          totalNoOfRatings as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
 				"          hashtagList as string,",
 				"          offerName as string,",
 				"          cmsLinkIos as string,",
-				"          qty as string,",
+				"          qty as integer,",
 				"          subCollection as string,",
 				"          subCollectionId as string,",
-				"          isCygnusEnabled as string,",
-				"          isCashbackApplicable as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
 				"          searchProductName as string,",
-				"          Market_Price as string,",
+				"          Market_Price as integer,",
 				"          Lenskart_Price as integer,",
-				"          Discount_Percentage as string",
+				"          Discount_Percentage as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
@@ -281,8 +281,6 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> Transactions1",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> SOURCE",
 				"source(output(",
 				"          customer_id as string,",
 				"          product_id as string,",
@@ -364,7 +362,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
 				"select2 derive(TotalRevenue = Lenskart_Price*TotalQuantity) ~> derivedColumn2",
-				"derivedColumn2 sort(desc(TotalQuantity, true)) ~> sort1",
+				"derivedColumn2 sort(desc(TotalQuantity, true)) ~> ProductRevQty",
 				"Transactions1, Products join(product_id == id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -389,9 +387,9 @@
 				"          Month),",
 				"     TotalRevenue = sum(Revenue)) ~> aggregate3",
 				"derivedColumn3 aggregate(groupBy(Year),",
-				"     TotalYearlyRevenue = sum(Revenue)) ~> aggregate4",
+				"     TotalYearlyRevenue = sum(Revenue)) ~> TotalrevenueYearly",
 				"addYearMonth aggregate(groupBy(Month),",
-				"     TotalMonthlyRevenue = sum(Revenue)) ~> aggregate5",
+				"     TotalMonthlyRevenue = sum(Revenue)) ~> totalRevenueMonth",
 				"Transactions2, Products join(product_id == id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
@@ -405,7 +403,9 @@
 				"     skipDuplicateMapOutputs: true) ~> select3",
 				"select3 derive(transaction_date = year(transaction_date)) ~> derivedColumn4",
 				"derivedColumn4 aggregate(groupBy(transaction_date),",
-				"     TotalProducts = sum(quantity)) ~> aggregate6"
+				"     TotalProducts = sum(quantity)) ~> TotalProductsPerYear",
+				"aggregate3 sort(desc(Year, true),",
+				"     asc(Month, true)) ~> RevenueMonthYear"
 			]
 		}
 	}
