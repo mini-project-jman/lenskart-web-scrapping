@@ -17,6 +17,20 @@
 						"type": "DatasetReference"
 					},
 					"name": "ProductRefined2"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_productsRefined_transform",
+						"type": "DatasetReference"
+					},
+					"name": "ProductRefined3"
+				},
+				{
+					"dataset": {
+						"referenceName": "dataset_transactionRefiendSQL",
+						"type": "DatasetReference"
+					},
+					"name": "transactionRefined"
 				}
 			],
 			"sinks": [
@@ -44,6 +58,15 @@
 				},
 				{
 					"name": "sortAvgRating"
+				},
+				{
+					"name": "groupByProductID"
+				},
+				{
+					"name": "TRjoinPR"
+				},
+				{
+					"name": "nullValuesSplit"
 				}
 			],
 			"scriptLines": [
@@ -117,10 +140,65 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ProductRefined2",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductRefined3",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> transactionRefined",
 				"productRefined sort(desc(avgRating, true)) ~> sort1",
 				"ProductRefined2 aggregate(groupBy(classification),",
 				"     avgRating = avg(avgRating)) ~> averageReviewValue",
 				"averageReviewValue sort(desc(avgRating, true)) ~> sortAvgRating",
+				"transactionRefined aggregate(groupBy(product_id),",
+				"     quantity = sum(quantity)) ~> groupByProductID",
+				"groupByProductID, ProductRefined3 join(product_id == id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> TRjoinPR",
+				"TRjoinPR split(isNull(id),",
+				"     disjoint: true) ~> nullValuesSplit@(nullVals, nonNullVals)",
 				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
