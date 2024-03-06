@@ -1,41 +1,46 @@
 {
-	"name": "dataflow1",
+	"name": "Cleansing",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "Product",
+						"referenceName": "AzureSqlTable2",
 						"type": "DatasetReference"
 					},
 					"name": "ProductDetails"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable3",
-						"type": "DatasetReference"
-					},
-					"name": "CustomerDetails"
-				},
-				{
-					"dataset": {
-						"referenceName": "Transaction",
+						"referenceName": "AzureSqlTable4",
 						"type": "DatasetReference"
 					},
 					"name": "Transactions"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable5",
+						"type": "DatasetReference"
+					},
+					"name": "ProductFined"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable6",
+						"type": "DatasetReference"
+					},
+					"name": "TransactionsFined"
+				}
+			],
 			"transformations": [
 				{
 					"name": "TypeCasting"
 				},
 				{
 					"name": "WidthInMM"
-				},
-				{
-					"name": "derivedColumn1"
 				},
 				{
 					"name": "TypeCastingDateQty"
@@ -79,18 +84,6 @@
 				"     format: 'table') ~> ProductDetails",
 				"source(output(",
 				"          customer_id as string,",
-				"          first_name as string,",
-				"          last_name as string,",
-				"          email as string,",
-				"          phone_number as string,",
-				"          address as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> CustomerDetails",
-				"source(output(",
-				"          customer_id as string,",
 				"          product_id as string,",
 				"          quantity as string,",
 				"          transaction_date as string,",
@@ -132,14 +125,33 @@
 				"          Discount_Percentage as integer",
 				"     ),",
 				"     errors: true) ~> TypeCasting",
-				"ProductDetails derive(width = replace(width, 'mm', ''),",
-				"          specifications = ERROR_FUNCTION('')) ~> WidthInMM",
-				"TypeCasting derive() ~> derivedColumn1",
+				"ProductDetails derive(width = replace(width, 'mm', '')) ~> WidthInMM",
 				"Transactions cast(output(",
 				"          quantity as integer,",
 				"          transaction_date as date",
 				"     ),",
-				"     errors: true) ~> TypeCastingDateQty"
+				"     errors: true) ~> TypeCastingDateQty",
+				"TypeCasting sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> ProductFined",
+				"TypeCastingDateQty sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> TransactionsFined"
 			]
 		}
 	}
