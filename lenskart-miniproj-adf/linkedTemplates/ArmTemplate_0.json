@@ -617,7 +617,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "all_customers_reviews.csv",
+						"fileName": "reviews_data.csv",
 						"container": "lenskardata"
 					},
 					"columnDelimiter": ",",
