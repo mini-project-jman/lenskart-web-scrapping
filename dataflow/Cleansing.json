@@ -22,14 +22,14 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable9",
+						"referenceName": "productsRefinedAZuresA",
 						"type": "DatasetReference"
 					},
 					"name": "ProductFined"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable10",
+						"referenceName": "TransactionREfinedASQL",
 						"type": "DatasetReference"
 					},
 					"name": "TransactionsFined"
@@ -109,7 +109,6 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     recreate:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",

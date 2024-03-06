@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable9",
+	"name": "TransactionREfinedASQL",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",
@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "raw",
-			"table": "ProductsRefined"
+			"table": "TransactionsRefined"
 		}
 	}
 }
