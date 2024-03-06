@@ -30,6 +30,13 @@
 						"referenceName": "ls_lenskart_raw_blob",
 						"type": "LinkedServiceReference"
 					}
+				},
+				{
+					"dataset": {
+						"referenceName": "brandWithPurchasedCount",
+						"type": "DatasetReference"
+					},
+					"name": "brandWithPurchasedCount"
 				}
 			],
 			"transformations": [
@@ -115,9 +122,10 @@
 				"     ),",
 				"     errors: true) ~> cast1",
 				"derivedColumn1 aggregate(groupBy(brand_name),",
-				"     purchase_count = count(Lenskart_Price)) ~> aggregate2",
+				"     purchase_sum = sum(Lenskart_Price),",
+				"          quantity = sum(quantity)) ~> aggregate2",
 				"filter1 derive(transaction_date = substring(transaction_date,1,4)) ~> derivedColumn1",
-				"aggregate2 sort(asc(purchase_count, true)) ~> sort1",
+				"aggregate2 sort(asc(purchase_sum, true)) ~> sort1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -127,7 +135,17 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> ClassificationSoldCount"
+				"     errorHandlingOption: 'stopOnFirstError') ~> ClassificationSoldCount",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> brandWithPurchasedCount"
 			]
 		}
 	}
