@@ -54,7 +54,64 @@
 					"name": "Transactions2"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Manan_Om",
+						"type": "DatasetReference"
+					},
+					"name": "SoldTotalQtyCategoryby"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable13",
+						"type": "DatasetReference"
+					},
+					"name": "RevenuePerCategory"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable14",
+						"type": "DatasetReference"
+					},
+					"name": "RevenuePerProduct"
+				},
+				{
+					"dataset": {
+						"referenceName": "YearlyRevenue",
+						"type": "DatasetReference"
+					},
+					"name": "TotalRevenuePerYear"
+				},
+				{
+					"dataset": {
+						"referenceName": "revenuemonth",
+						"type": "DatasetReference"
+					},
+					"name": "MonthlyRevenue"
+				},
+				{
+					"dataset": {
+						"referenceName": "RevenueByMonthPerYear",
+						"type": "DatasetReference"
+					},
+					"name": "RevenueByMonthPerYear"
+				},
+				{
+					"dataset": {
+						"referenceName": "TotalRevenuePerYear",
+						"type": "DatasetReference"
+					},
+					"name": "TotalProductPerYear"
+				},
+				{
+					"dataset": {
+						"referenceName": "MostLoyalCustomer",
+						"type": "DatasetReference"
+					},
+					"name": "MostLoyalCustomer"
+				}
+			],
 			"transformations": [
 				{
 					"name": "QtyofEachproduct"
@@ -132,7 +189,8 @@
 					"name": "select3"
 				},
 				{
-					"name": "derivedColumn4"
+					"name": "derivedColumn4",
+					"description": "Creating/updating the columns 'quantity, Year'"
 				},
 				{
 					"name": "TotalProductsPerYear"
@@ -401,11 +459,91 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
-				"select3 derive(transaction_date = year(transaction_date)) ~> derivedColumn4",
-				"derivedColumn4 aggregate(groupBy(transaction_date),",
+				"select3 derive(Year = year(transaction_date)) ~> derivedColumn4",
+				"derivedColumn4 aggregate(groupBy(Year),",
 				"     TotalProducts = sum(quantity)) ~> TotalProductsPerYear",
 				"aggregate3 sort(desc(Year, true),",
-				"     asc(Month, true)) ~> RevenueMonthYear"
+				"     asc(Month, true)) ~> RevenueMonthYear",
+				"SoldTotalQtyCategory sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> SoldTotalQtyCategoryby",
+				"SoldRevenueByCategory sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> RevenuePerCategory",
+				"ProductRevQty sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> RevenuePerProduct",
+				"TotalrevenueYearly sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> TotalRevenuePerYear",
+				"totalRevenueMonth sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> MonthlyRevenue",
+				"RevenueMonthYear sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> RevenueByMonthPerYear",
+				"TotalProductsPerYear sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> TotalProductPerYear",
+				"QtyproductBought sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> MostLoyalCustomer"
 			]
 		}
 	}

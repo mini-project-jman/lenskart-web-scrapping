@@ -1,0 +1,16 @@
+{
+	"name": "AzureSqlTable14",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_lenskart_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "Reports",
+			"table": "ProductRevenueQtyDetails"
+		}
+	}
+}
