@@ -440,8 +440,6 @@
 					{
 						"name": "Arjun_Dataflow",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -477,8 +475,6 @@
 					{
 						"name": "manan-om",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -490,7 +486,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "dataflow1",
+								"referenceName": "manan_om",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
@@ -522,8 +518,6 @@
 					{
 						"name": "mostwanted",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -555,8 +549,6 @@
 					{
 						"name": "mohana",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -588,8 +580,6 @@
 					{
 						"name": "Pramod_Dataflow",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -627,8 +617,6 @@
 					{
 						"name": "brandWithPurchasedCount",
 						"type": "ExecuteDataFlow",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -698,7 +686,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/Arjun_Dataflow')]",
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]",
+				"[concat(variables('factoryId'), '/dataflows/manan_om')]",
 				"[concat(variables('factoryId'), '/dataflows/mostwanted')]",
 				"[concat(variables('factoryId'), '/dataflows/mohana')]",
 				"[concat(variables('factoryId'), '/dataflows/Pramod_Dataflow')]",
@@ -4299,7 +4287,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
+			"name": "[concat(parameters('factoryName'), '/manan_om')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
 			"properties": {
