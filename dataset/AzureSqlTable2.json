@@ -1,0 +1,133 @@
+{
+	"name": "AzureSqlTable2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_azure_sql_lenskart_db",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_url",
+				"type": "nvarchar"
+			},
+			{
+				"name": "color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "size",
+				"type": "nvarchar"
+			},
+			{
+				"name": "width",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_name_en",
+				"type": "nvarchar"
+			},
+			{
+				"name": "model_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_tbyb",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tags",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_ditto",
+				"type": "nvarchar"
+			},
+			{
+				"name": "classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "specifications",
+				"type": "nvarchar"
+			},
+			{
+				"name": "wishlistCount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "purchaseCount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "avgRating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "totalNoOfRatings",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hashtagList",
+				"type": "nvarchar"
+			},
+			{
+				"name": "offerName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cmsLinkIos",
+				"type": "nvarchar"
+			},
+			{
+				"name": "qty",
+				"type": "nvarchar"
+			},
+			{
+				"name": "subCollection",
+				"type": "nvarchar"
+			},
+			{
+				"name": "subCollectionId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isCygnusEnabled",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isCashbackApplicable",
+				"type": "nvarchar"
+			},
+			{
+				"name": "searchProductName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Market_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Lenskart_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Discount_Percentage",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "productDetails"
+		}
+	}
+}
