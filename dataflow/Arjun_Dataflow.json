@@ -6,19 +6,88 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "productsRefinedAZuresA",
+						"referenceName": "dataset_productsRefined_transform",
 						"type": "DatasetReference"
 					},
 					"name": "productRefined"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "BestProductBasedOnReviewSQL",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "sort1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> productRefined"
+				"     format: 'table') ~> productRefined",
+				"productRefined sort(desc(avgRating, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          id,",
+				"          product_url,",
+				"          color,",
+				"          size,",
+				"          width,",
+				"          brand_name_en,",
+				"          model_name,",
+				"          classification,",
+				"          avgRating,",
+				"          searchProductName,",
+				"          Market_Price,",
+				"          Lenskart_Price,",
+				"          Discount_Percentage",
+				"     )) ~> sink1"
 			]
 		}
 	}
