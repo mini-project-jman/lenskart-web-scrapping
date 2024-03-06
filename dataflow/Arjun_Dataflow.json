@@ -27,7 +27,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "dataset_transactionRefiendSQL",
+						"referenceName": "TransactionREfinedASQL",
 						"type": "DatasetReference"
 					},
 					"name": "transactionRefined"
