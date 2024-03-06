@@ -9,7 +9,7 @@
 						"referenceName": "productas",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "Products"
 				},
 				{
 					"dataset": {
@@ -22,19 +22,25 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "aggregate1"
+					"name": "QtyofEachproduct"
+				},
+				{
+					"name": "transaction"
+				},
+				{
+					"name": "Categoryfield"
+				},
+				{
+					"name": "SoldTotalQtyCategory"
 				},
 				{
 					"name": "join1"
-				},
-				{
-					"name": "select1"
-				},
-				{
-					"name": "aggregate2"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     parameter1 as string",
+				"}",
 				"source(output(",
 				"          id as string,",
 				"          product_url as string,",
@@ -69,7 +75,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1",
+				"     format: 'table') ~> Products",
 				"source(output(",
 				"          customer_id as string,",
 				"          product_id as string,",
@@ -82,20 +88,25 @@
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> Transactions",
 				"Transactions aggregate(groupBy(product_id),",
-				"     TotalQuantity = sum(quantity)) ~> aggregate1",
-				"source1, aggregate1 join(id == product_id,",
+				"     TotalQuantity = sum(quantity)) ~> QtyofEachproduct",
+				"Products, QtyofEachproduct join(id == product_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1",
-				"join1 select(mapColumn(",
+				"     broadcast: 'auto')~> transaction",
+				"transaction select(mapColumn(",
 				"          classification,",
 				"          TotalQuantity",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 aggregate(groupBy(classification),",
-				"     TotalQuantity = sum(TotalQuantity)) ~> aggregate2"
+				"     skipDuplicateMapOutputs: true) ~> Categoryfield",
+				"Categoryfield aggregate(groupBy(classification),",
+				"     TotalQuantity = sum(TotalQuantity)) ~> SoldTotalQtyCategory",
+				"QtyofEachproduct, Products join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1"
 			]
 		}
 	}
