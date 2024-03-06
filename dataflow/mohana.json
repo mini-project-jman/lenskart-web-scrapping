@@ -1,0 +1,109 @@
+{
+	"name": "mohana",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "dataset_productsRefined_transform",
+						"type": "DatasetReference"
+					},
+					"name": "ProuctSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "BestSellingBrand",
+						"type": "DatasetReference"
+					},
+					"name": "TopSellingBrandOnCount",
+					"rejectedDataLinkedService": {
+						"referenceName": "ls_lenskart_raw_blob",
+						"type": "LinkedServiceReference"
+					}
+				}
+			],
+			"transformations": [
+				{
+					"name": "BrandAggregation"
+				},
+				{
+					"name": "Typecasting"
+				},
+				{
+					"name": "BrandRanking"
+				},
+				{
+					"name": "TopSellingBrand"
+				},
+				{
+					"name": "TopBrandSelect"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProuctSource",
+				"ProuctSource aggregate(groupBy(brand_name),",
+				"     tot_purchaseCount = sum(purchaseCount)) ~> BrandAggregation",
+				"BrandAggregation cast(output(",
+				"          tot_purchaseCount as integer",
+				"     ),",
+				"     errors: true) ~> Typecasting",
+				"Typecasting rank(desc(tot_purchaseCount, true),",
+				"     output(rank1 as long)) ~> BrandRanking",
+				"BrandRanking filter(equals(rank1,1)) ~> TopSellingBrand",
+				"TopSellingBrand select(mapColumn(",
+				"          brand_name,",
+				"          tot_purchaseCount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> TopBrandSelect",
+				"TopBrandSelect sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> TopSellingBrandOnCount"
+			]
+		}
+	}
+}
