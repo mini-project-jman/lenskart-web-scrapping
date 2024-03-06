@@ -5,8 +5,6 @@
 			{
 				"name": "import productDetails",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -61,8 +59,6 @@
 			{
 				"name": "import customerDetails",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "import productDetails",
@@ -124,8 +120,6 @@
 			{
 				"name": "import transactionDetails",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "import customerDetails",
