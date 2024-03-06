@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "M2",
+						"referenceName": "brandWithPurchasedCount",
 						"type": "DataFlowReference"
 					},
 					"compute": {

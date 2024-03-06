@@ -1,5 +1,5 @@
 {
-	"name": "M2",
+	"name": "brandWithPurchasedCount",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
