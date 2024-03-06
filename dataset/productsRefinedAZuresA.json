@@ -10,7 +10,7 @@
 		"schema": [],
 		"typeProperties": {
 			"schema": "raw",
-			"table": "ProducrtsRefined"
+			"table": "ProducrtsRefined2"
 		}
 	}
 }
