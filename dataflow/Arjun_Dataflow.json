@@ -1,0 +1,157 @@
+{
+	"name": "Arjun_Dataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable8",
+						"type": "DatasetReference"
+					},
+					"name": "ProductDetails"
+				},
+				{
+					"dataset": {
+						"referenceName": "Transaction",
+						"type": "DatasetReference"
+					},
+					"name": "Transactions"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "productsRefinedAZuresA",
+						"type": "DatasetReference"
+					},
+					"name": "ProductFined"
+				},
+				{
+					"dataset": {
+						"referenceName": "TransactionREfinedASQL",
+						"type": "DatasetReference"
+					},
+					"name": "TransactionsFined"
+				}
+			],
+			"transformations": [
+				{
+					"name": "TypeCasting"
+				},
+				{
+					"name": "WidthInMM"
+				},
+				{
+					"name": "TypeCastingDateQty"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as string,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as string,",
+				"          tags as string,",
+				"          is_ditto as string,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as string,",
+				"          purchaseCount as string,",
+				"          avgRating as string,",
+				"          totalNoOfRatings as string,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as string,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as string,",
+				"          isCashbackApplicable as string,",
+				"          searchProductName as string,",
+				"          Market_Price as string,",
+				"          Lenskart_Price as string,",
+				"          Discount_Percentage as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> ProductDetails",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as string,",
+				"          transaction_date as string,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Transactions",
+				"WidthInMM cast(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          width as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          specifications as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          Market_Price as integer,",
+				"          Lenskart_Price as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     errors: true) ~> TypeCasting",
+				"ProductDetails derive(width = replace(width, 'mm', '')) ~> WidthInMM",
+				"Transactions cast(output(",
+				"          quantity as integer,",
+				"          transaction_date as date",
+				"     ),",
+				"     errors: true) ~> TypeCastingDateQty",
+				"TypeCasting sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> ProductFined",
+				"TypeCastingDateQty sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> TransactionsFined"
+			]
+		}
+	}
+}
