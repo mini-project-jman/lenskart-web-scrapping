@@ -1,12 +1,12 @@
 {
-	"name": "manan_om",
+	"name": "df_manan_om",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "raw_productsRefined2",
+						"referenceName": "AzureSqlTable12",
 						"type": "DatasetReference"
 					},
 					"name": "Products"
@@ -20,7 +20,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "reports_classificationSold",
+						"referenceName": "AzureSqlTable11",
 						"type": "DatasetReference"
 					},
 					"name": "ProductsRevenueHigh"
@@ -34,7 +34,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "reports_classificationSold",
+						"referenceName": "AzureSqlTable11",
 						"type": "DatasetReference"
 					},
 					"name": "products1"
@@ -64,35 +64,35 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "reports_sales_by_year",
+						"referenceName": "AzureSqlTable13",
 						"type": "DatasetReference"
 					},
 					"name": "RevenuePerCategory"
 				},
 				{
 					"dataset": {
-						"referenceName": "reports_productREvenueQtyDetails",
+						"referenceName": "AzureSqlTable14",
 						"type": "DatasetReference"
 					},
 					"name": "RevenuePerProduct"
 				},
 				{
 					"dataset": {
-						"referenceName": "YearlyRevenue",
+						"referenceName": "CategoryYearlyRevenue",
 						"type": "DatasetReference"
 					},
 					"name": "TotalRevenuePerYear"
 				},
 				{
 					"dataset": {
-						"referenceName": "revenuemonth",
+						"referenceName": "CategoryMonthlyRevenue",
 						"type": "DatasetReference"
 					},
 					"name": "MonthlyRevenue"
 				},
 				{
 					"dataset": {
-						"referenceName": "RevenueByMonthPerYear",
+						"referenceName": "CategoryRevenueByMonthPerYear",
 						"type": "DatasetReference"
 					},
 					"name": "RevenueByMonthPerYear"
@@ -126,31 +126,31 @@
 					"name": "SoldTotalQtyCategory"
 				},
 				{
-					"name": "join1"
+					"name": "JoiningQtyProduct1"
 				},
 				{
 					"name": "ptdQtyyDetails"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "derivedRevenue"
 				},
 				{
 					"name": "SoldRevenueByCategory"
 				},
 				{
-					"name": "join2"
+					"name": "JoiningQtyProduct2"
 				},
 				{
-					"name": "select1"
+					"name": "NecessaryFields1"
 				},
 				{
-					"name": "aggregate2"
+					"name": "CountingNoOfProducts"
 				},
 				{
 					"name": "QtyproductBought"
 				},
 				{
-					"name": "join3"
+					"name": "JoiningQtyProducts3"
 				},
 				{
 					"name": "select2"
@@ -171,10 +171,10 @@
 					"name": "addYearMonth"
 				},
 				{
-					"name": "derivedColumn3"
+					"name": "addYearRevenue"
 				},
 				{
-					"name": "aggregate3"
+					"name": "CategoryMonthlyRevenue"
 				},
 				{
 					"name": "TotalrevenueYearly"
@@ -183,13 +183,13 @@
 					"name": "totalRevenueMonth"
 				},
 				{
-					"name": "join4"
+					"name": "joiningProduct"
 				},
 				{
-					"name": "select3"
+					"name": "NecessaryFields2"
 				},
 				{
-					"name": "derivedColumn4",
+					"name": "addYear",
 					"description": "Creating/updating the columns 'quantity, Year'"
 				},
 				{
@@ -197,6 +197,12 @@
 				},
 				{
 					"name": "RevenueMonthYear"
+				},
+				{
+					"name": "Sorting"
+				},
+				{
+					"name": "Sorting1"
 				}
 			],
 			"scriptLines": [
@@ -369,23 +375,23 @@
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join1",
-				"join1 select(mapColumn(",
+				"     broadcast: 'auto')~> JoiningQtyProduct1",
+				"JoiningQtyProduct1 select(mapColumn(",
 				"          classification,",
 				"          Lenskart_Price,",
 				"          TotalQuantity",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> ptdQtyyDetails",
-				"ptdQtyyDetails derive(Revenue = Lenskart_Price*TotalQuantity) ~> derivedColumn1",
-				"derivedColumn1 aggregate(groupBy(classification),",
+				"ptdQtyyDetails derive(Revenue = Lenskart_Price*TotalQuantity) ~> derivedRevenue",
+				"derivedRevenue aggregate(groupBy(classification),",
 				"     TotalRevenue = sum(Revenue)) ~> SoldRevenueByCategory",
 				"Customers, Transactions join(Customers@customer_id == Transactions@customer_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join2",
-				"join2 select(mapColumn(",
+				"     broadcast: 'auto')~> JoiningQtyProduct2",
+				"JoiningQtyProduct2 select(mapColumn(",
 				"          customer_id = Transactions@customer_id,",
 				"          first_name,",
 				"          last_name,",
@@ -395,19 +401,19 @@
 				"          product_id",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 aggregate(groupBy(customer_id,",
+				"     skipDuplicateMapOutputs: true) ~> NecessaryFields1",
+				"NecessaryFields1 aggregate(groupBy(customer_id,",
 				"          first_name,",
 				"          last_name,",
 				"          phone_number),",
-				"     No_of_Products = count(product_id)) ~> aggregate2",
-				"aggregate2 sort(desc(No_of_Products, true)) ~> QtyproductBought",
+				"     No_of_Products = count(product_id)) ~> CountingNoOfProducts",
+				"CountingNoOfProducts sort(desc(No_of_Products, true)) ~> QtyproductBought",
 				"products1, QtyofEachproduct join(id == product_id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join3",
-				"join3 select(mapColumn(",
+				"     broadcast: 'auto')~> JoiningQtyProducts3",
+				"JoiningQtyProducts3 select(mapColumn(",
 				"          id,",
 				"          product_url,",
 				"          color,",
@@ -432,7 +438,8 @@
 				"          quantity,",
 				"          transaction_date,",
 				"          brand_name,",
-				"          Lenskart_Price",
+				"          Lenskart_Price,",
+				"          classification",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> NecessaryFieldsGroupByMonth",
@@ -440,30 +447,35 @@
 				"          Year = year(transaction_date),",
 				"          Month = month(transaction_date)) ~> addYearMonth",
 				"NecessaryFieldsGroupByMonth derive(Year = year(transaction_date),",
-				"          Revenue = quantity*Lenskart_Price) ~> derivedColumn3",
+				"          Revenue = quantity*Lenskart_Price) ~> addYearRevenue",
 				"addYearMonth aggregate(groupBy(Year,",
-				"          Month),",
-				"     TotalRevenue = sum(Revenue)) ~> aggregate3",
-				"derivedColumn3 aggregate(groupBy(Year),",
+				"          Month,",
+				"          classification),",
+				"     TotalRevenue = sum(Revenue)) ~> CategoryMonthlyRevenue",
+				"addYearRevenue aggregate(groupBy(Year,",
+				"          classification),",
 				"     TotalYearlyRevenue = sum(Revenue)) ~> TotalrevenueYearly",
-				"addYearMonth aggregate(groupBy(Month),",
+				"addYearMonth aggregate(groupBy(Month,",
+				"          classification),",
 				"     TotalMonthlyRevenue = sum(Revenue)) ~> totalRevenueMonth",
 				"Transactions2, Products join(product_id == id,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
-				"     broadcast: 'auto')~> join4",
-				"join4 select(mapColumn(",
+				"     broadcast: 'auto')~> joiningProduct",
+				"joiningProduct select(mapColumn(",
 				"          quantity,",
 				"          transaction_date",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select3",
-				"select3 derive(Year = year(transaction_date)) ~> derivedColumn4",
-				"derivedColumn4 aggregate(groupBy(Year),",
+				"     skipDuplicateMapOutputs: true) ~> NecessaryFields2",
+				"NecessaryFields2 derive(Year = year(transaction_date)) ~> addYear",
+				"addYear aggregate(groupBy(Year),",
 				"     TotalProducts = sum(quantity)) ~> TotalProductsPerYear",
-				"aggregate3 sort(desc(Year, true),",
+				"CategoryMonthlyRevenue sort(desc(Year, true),",
 				"     asc(Month, true)) ~> RevenueMonthYear",
+				"totalRevenueMonth sort(asc(Month, true)) ~> Sorting",
+				"TotalrevenueYearly sort(asc(Year, true)) ~> Sorting1",
 				"SoldTotalQtyCategory sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -494,7 +506,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> RevenuePerProduct",
-				"TotalrevenueYearly sink(allowSchemaDrift: true,",
+				"Sorting1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -504,7 +516,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> TotalRevenuePerYear",
-				"totalRevenueMonth sink(allowSchemaDrift: true,",
+				"Sorting sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
