@@ -1,5 +1,5 @@
 {
-	"name": "productsRefinedAZuresA",
+	"name": "AzureSqlTable2",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",
@@ -9,8 +9,8 @@
 		"type": "AzureSqlTable",
 		"schema": [],
 		"typeProperties": {
-			"schema": "prep",
-			"table": "ProducrtsRefined2"
+			"schema": "Reports",
+			"table": "productQtyrevn"
 		}
 	}
 }
