@@ -51,7 +51,7 @@
 				}
 			},
 			{
-				"name": "mostwanted",
+				"name": "CategoryofProductsSold",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -64,7 +64,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "mostwanted",
+						"referenceName": "Karthickashwin1",
 						"type": "DataFlowReference"
 					},
 					"compute": {
