@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "raw_productsRefined2",
+						"referenceName": "prep_Products",
 						"type": "DatasetReference"
 					},
 					"name": "Product"
@@ -51,7 +51,7 @@
 			],
 			"scriptLines": [
 				"source(output(",
-				"          id as string,",
+				"          id as integer,",
 				"          product_url as string,",
 				"          color as string,",
 				"          size as string,",
