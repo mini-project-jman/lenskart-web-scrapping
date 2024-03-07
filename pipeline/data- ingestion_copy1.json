@@ -5,8 +5,6 @@
 			{
 				"name": "import productDetails",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -61,8 +59,6 @@
 			{
 				"name": "import customerDetails",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "import productDetails",
@@ -156,9 +152,11 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true
+						},
 						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
@@ -173,13 +171,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "dataset_lenskart_transactions_csv",
+						"referenceName": "transaction_data_from_csv",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "transactions_data_azure_sql",
+						"referenceName": "transaction_data_to_sql",
 						"type": "DatasetReference"
 					}
 				]
@@ -250,6 +248,8 @@
 			{
 				"name": "Copy data1",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
