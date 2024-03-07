@@ -5,14 +5,167 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "transactionRefined_to_sql",
+						"type": "DatasetReference"
+					},
 					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ProductRefined_to_sql",
+						"type": "DatasetReference"
+					},
+					"name": "DimensionProducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "customer_data_to_sql",
+						"type": "DatasetReference"
+					},
+					"name": "DimensionsCustomers"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "facts_ds_transaction_sql",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "dim_products_sink",
+						"type": "DatasetReference"
+					},
+					"name": "dimProducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "dim_customer_sink",
+						"type": "DatasetReference"
+					},
+					"name": "dimCustomerSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectReqCols"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1"
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source1",
+				"source(output(",
+				"          id as string,",
+				"          product_url as string,",
+				"          color as string,",
+				"          size as string,",
+				"          {width(in mm)} as integer,",
+				"          brand_name as string,",
+				"          brand_name_en as string,",
+				"          model_name as string,",
+				"          is_tbyb as boolean,",
+				"          tags as string,",
+				"          is_ditto as boolean,",
+				"          classification as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          hashtagList as string,",
+				"          offerName as string,",
+				"          cmsLinkIos as string,",
+				"          qty as integer,",
+				"          subCollection as string,",
+				"          subCollectionId as string,",
+				"          isCygnusEnabled as boolean,",
+				"          isCashbackApplicable as boolean,",
+				"          searchProductName as string,",
+				"          {Market_Price(INR)} as integer,",
+				"          {Lenskart_Price(INR)} as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimensionProducts",
+				"source(output(",
+				"          customer_id as string,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          email as string,",
+				"          phone_number as string,",
+				"          address as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DimensionsCustomers",
+				"DimensionProducts select(mapColumn(",
+				"          id,",
+				"          color,",
+				"          size,",
+				"          {width(in mm)},",
+				"          brand_name,",
+				"          model_name,",
+				"          classification,",
+				"          wishlistCount,",
+				"          purchaseCount,",
+				"          avgRating,",
+				"          totalNoOfRatings,",
+				"          offerName,",
+				"          qty,",
+				"          searchProductName,",
+				"          {Market_Price(INR)},",
+				"          {Lenskart_Price(INR)},",
+				"          Discount_Percentage",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SelectReqCols",
+				"source1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink1",
+				"SelectReqCols sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> dimProducts",
+				"DimensionsCustomers sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> dimCustomerSink"
 			]
 		}
 	}

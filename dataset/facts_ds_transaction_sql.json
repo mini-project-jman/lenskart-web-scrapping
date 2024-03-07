@@ -1,0 +1,16 @@
+{
+	"name": "facts_ds_transaction_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_new",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "facts",
+			"table": "transaction"
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "dim_products_sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_new",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dim",
+			"table": "products"
+		}
+	}
+}

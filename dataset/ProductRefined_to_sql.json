@@ -10,7 +10,129 @@
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
-		"schema": [],
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_url",
+				"type": "nvarchar"
+			},
+			{
+				"name": "color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "size",
+				"type": "nvarchar"
+			},
+			{
+				"name": "width(in mm)",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "brand_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_name_en",
+				"type": "nvarchar"
+			},
+			{
+				"name": "model_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_tbyb",
+				"type": "bit"
+			},
+			{
+				"name": "tags",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_ditto",
+				"type": "bit"
+			},
+			{
+				"name": "classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "wishlistCount",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "purchaseCount",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "avgRating",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "totalNoOfRatings",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "hashtagList",
+				"type": "nvarchar"
+			},
+			{
+				"name": "offerName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cmsLinkIos",
+				"type": "nvarchar"
+			},
+			{
+				"name": "qty",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "subCollection",
+				"type": "nvarchar"
+			},
+			{
+				"name": "subCollectionId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isCygnusEnabled",
+				"type": "bit"
+			},
+			{
+				"name": "isCashbackApplicable",
+				"type": "bit"
+			},
+			{
+				"name": "searchProductName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Market_Price(INR)",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Lenskart_Price(INR)",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Discount_Percentage",
+				"type": "int",
+				"precision": 10
+			}
+		],
 		"typeProperties": {
 			"schema": "prep",
 			"table": "ProductsData"
