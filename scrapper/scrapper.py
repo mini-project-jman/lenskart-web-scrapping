@@ -29,6 +29,8 @@ def scrap():
     logging.info("Data saved to 'products_data.csv'")
 
     #upload_to_blob('data/products_data.csv')
+    #upload_to_blob('data/customers.csv')
+    #upload_to_blob('data/transactions.csv')
 
 def scrape_reviews():
     df = pd.read_csv("data/products_data.csv")
@@ -44,4 +46,5 @@ def scrape_reviews():
 
     reviews_df.to_csv('data/reviews_data.csv', index=False)
     logging.info("Data saved to 'reviews_data.csv'")
+    #upload_to_blob('data/reviews_data.csv')
 

@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import logging
+from utils.upload import upload_to_blob
 def transform():
 
     logging.info("data transformation in progress")
@@ -26,5 +27,6 @@ def transform():
     df['Discount_Percentage'] = round(((df['Market_Price'] - df['Lenskart_Price']) / df['Market_Price']) * 100,0)
 
     df.to_csv('data/final_data.csv', index=False)
+    upload_to_blob('data/final_data.csv')
 
     logging.info("data transformation done!")

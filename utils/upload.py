@@ -1,21 +1,12 @@
 import os
 import uuid
+import pandas as pd
 
-from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobClient
-credential = DefaultAzureCredential()
+from azure.storage.blob import ContainerClient
 
 
 def upload_to_blob(file):
-    storage_url = "https://lenskartsa.blob.core.windows.net/"
-
-    blob_client = BlobClient(
-        storage_url,
-        container_name="lenskardata",
-        blob_name=file,
-        credential=credential,
-    )
-
+    container_client = ContainerClient.from_connection_string(conn_str="", container_name="lenskardata")
     with open(file, "rb") as data:
-        blob_client.upload_blob(data)
-        print(f"Uploaded {file} to {blob_client.url}")
+        container_client.upload_blob(name=file, data=data)
+    
