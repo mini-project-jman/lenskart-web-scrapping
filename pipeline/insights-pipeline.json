@@ -5,6 +5,8 @@
 			{
 				"name": "Arjun_Dataflow",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -29,6 +31,8 @@
 			{
 				"name": "manan-om",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -51,8 +55,10 @@
 				}
 			},
 			{
-				"name": "CategoryofProductsSold",
+				"name": "mostwanted",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -64,7 +70,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "Karthickashwin1",
+						"referenceName": "mostwanted",
 						"type": "DataFlowReference"
 					},
 					"compute": {
@@ -77,6 +83,8 @@
 			{
 				"name": "mohana",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -125,6 +133,8 @@
 			{
 				"name": "brandWithPurchasedCount",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -149,6 +159,8 @@
 			{
 				"name": "CustomerReviewsandWishcount",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
