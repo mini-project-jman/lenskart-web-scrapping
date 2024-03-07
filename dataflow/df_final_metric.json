@@ -12,11 +12,52 @@
 					"name": "dimCustomer"
 				},
 				{
+					"dataset": {
+						"referenceName": "dim_products_sink",
+						"type": "DatasetReference"
+					},
 					"name": "dimProducts"
+				},
+				{
+					"dataset": {
+						"referenceName": "facts_ds_transaction_sql",
+						"type": "DatasetReference"
+					},
+					"name": "factTransactions"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "metrics_sink_curated_retain_customer",
+						"type": "DatasetReference"
+					},
+					"name": "retaningCustomer"
+				}
+			],
+			"transformations": [
+				{
+					"name": "joiningCustomer"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "groupOnCustID"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "getTotalRevenue"
+				},
+				{
+					"name": "sort1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          customer_id as string,",
@@ -30,8 +71,79 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> dimCustomer",
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> dimProducts"
+				"source(output(",
+				"          id as string,",
+				"          color as string,",
+				"          size as string,",
+				"          {width(in mm)} as integer,",
+				"          brand_name as string,",
+				"          model_name as string,",
+				"          classification as string,",
+				"          wishlistCount as integer,",
+				"          purchaseCount as integer,",
+				"          avgRating as integer,",
+				"          totalNoOfRatings as integer,",
+				"          offerName as string,",
+				"          qty as integer,",
+				"          searchProductName as string,",
+				"          {Market_Price(INR)} as integer,",
+				"          {Lenskart_Price(INR)} as integer,",
+				"          Discount_Percentage as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> dimProducts",
+				"source(output(",
+				"          customer_id as string,",
+				"          product_id as string,",
+				"          quantity as integer,",
+				"          transaction_date as date,",
+				"          transaction_id as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> factTransactions",
+				"factTransactions, dimCustomer join(factTransactions@customer_id == dimCustomer@customer_id,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> joiningCustomer",
+				"join1 select(mapColumn(",
+				"          customer_id = factTransactions@customer_id,",
+				"          product_id,",
+				"          quantity,",
+				"          transaction_date,",
+				"          transaction_id,",
+				"          customer_id = dimCustomer@customer_id,",
+				"          {Market_Price(INR)},",
+				"          {Lenskart_Price(INR)},",
+				"          Discount_Percentage",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"joiningCustomer filter(notEquals(dimCustomer@customer_id, 'NULL') ) ~> filter1",
+				"getTotalRevenue aggregate(groupBy(customer_id),",
+				"     totalRevenue = sum(totalRevenue)) ~> groupOnCustID",
+				"filter1, dimProducts join(product_id == id,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"select1 derive(totalRevenue = multiply(quantity, {Lenskart_Price(INR)})) ~> getTotalRevenue",
+				"groupOnCustID sort(asc(totalRevenue, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     recreate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> retaningCustomer"
 			]
 		}
 	}

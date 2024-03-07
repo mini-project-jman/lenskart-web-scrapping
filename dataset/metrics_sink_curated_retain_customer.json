@@ -1,0 +1,16 @@
+{
+	"name": "metrics_sink_curated_retain_customer",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_new",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "curated",
+			"table": "retain_customer"
+		}
+	}
+}
