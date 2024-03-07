@@ -1,5 +1,5 @@
 {
-	"name": "raw_productsRefined2",
+	"name": "Prep_ProductsRefined",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",
