@@ -1,0 +1,19 @@
+{
+	"name": "product_data_to_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_new",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "restructured_database"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "ProductData"
+		}
+	}
+}

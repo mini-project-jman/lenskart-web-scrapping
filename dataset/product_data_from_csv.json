@@ -1,0 +1,27 @@
+{
+	"name": "product_data_from_csv",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_raw_blob",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "restructured_database"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "products_data.csv",
+				"folderPath": "data",
+				"container": "lenskardata"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

@@ -31,7 +31,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "raw",
+			"schema": "prep",
 			"table": "TransactionsRefined"
 		}
 	}
