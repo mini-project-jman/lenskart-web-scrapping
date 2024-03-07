@@ -13,7 +13,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "Transaction",
+						"referenceName": "transactions_from_sql",
 						"type": "DatasetReference"
 					},
 					"name": "Transactions"
@@ -22,14 +22,14 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "productsRefinedAZuresA",
+						"referenceName": "ProductRefined_to_sql",
 						"type": "DatasetReference"
 					},
-					"name": "ProductFined"
+					"name": "ProductRefined"
 				},
 				{
 					"dataset": {
-						"referenceName": "TransactionREfinedASQL",
+						"referenceName": "transactionRefined_to_sql",
 						"type": "DatasetReference"
 					},
 					"name": "TransactionsFined"
@@ -44,9 +44,6 @@
 				},
 				{
 					"name": "TypeCastingDateQty"
-				},
-				{
-					"name": "select1"
 				}
 			],
 			"scriptLines": [
@@ -180,13 +177,7 @@
 				"          transaction_date as date",
 				"     ),",
 				"     errors: true) ~> TypeCastingDateQty",
-				"TypeCasting select(mapColumn(",
-				"          each(match(/* All input columns */ true()),",
-				"               /* Input name */ $$ = $$)",
-				"     ),",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select1",
-				"select1 sink(allowSchemaDrift: true,",
+				"TypeCasting sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -201,7 +192,7 @@
 				"          product_url,",
 				"          color,",
 				"          size,",
-				"          width = {width(in MM)},",
+				"          {width(in mm)} = width,",
 				"          brand_name,",
 				"          brand_name_en,",
 				"          model_name,",
@@ -209,7 +200,6 @@
 				"          tags,",
 				"          is_ditto,",
 				"          classification,",
-				"          specifications,",
 				"          wishlistCount,",
 				"          purchaseCount,",
 				"          avgRating,",
@@ -223,19 +213,12 @@
 				"          isCygnusEnabled,",
 				"          isCashbackApplicable,",
 				"          searchProductName,",
-				"          Market_Price,",
-				"          Lenskart_Price,",
+				"          {Market_Price(INR)} = Market_Price,",
+				"          {Lenskart_Price(INR)} = Lenskart_Price,",
 				"          Discount_Percentage",
-				"     )) ~> ProductFined",
+				"     )) ~> ProductRefined",
 				"TypeCastingDateQty sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          customer_id as string,",
-				"          product_id as string,",
-				"          quantity as integer,",
-				"          transaction_date as date,",
-				"          transaction_id as string",
-				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",

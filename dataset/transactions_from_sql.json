@@ -1,0 +1,40 @@
+{
+	"name": "transactions_from_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_new",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "restructured_database"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "customer_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "quantity",
+				"type": "nvarchar"
+			},
+			{
+				"name": "transaction_date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "transaction_id",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "Transaction"
+		}
+	}
+}
