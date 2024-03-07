@@ -16,15 +16,9 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
 					},
 					"sink": {
 						"type": "AzureSqlSink",
@@ -51,13 +45,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "product_data_from_csv",
+						"referenceName": "prep_Products",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "product_data_to_sql",
+						"referenceName": "Prep_ProductsRefined",
 						"type": "DatasetReference"
 					}
 				]
