@@ -126,6 +126,9 @@
 				},
 				{
 					"name": "derivedColumn1"
+				},
+				{
+					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -319,7 +322,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> selectNecessaryFields",
-				"orderbySalesYearAndMonth derive(sales_month = iif(sales_month==1, 'Jan',     iif(sales_month==2, 'Feb',         iif(sales_month==3, 'Mar',             iif(sales_month==4, 'Apr',                 iif(sales_month==5, 'May',                     iif(sales_month==6, 'Jun',                         iif(sales_month==7, 'Jul',                             iif(sales_month==8, 'Aug',                                 iif(sales_month==9, 'Sep',                                     iif(sales_month==10, 'Oct',                                         iif(sales_month==11, 'Nov',                                             iif(sales_month==12, 'Dec',                                                 'Invalid Month'                                             )                                         )                                     )                                 )                             )                         )                     )                 )             )         )     ) )  ) ~> derivedColumn1",
+				"orderbySalesYearAndMonth derive(sales_month = iif(sales_month==1, 'Jan',     iif(sales_month==2, 'Feb',         iif(sales_month==3, 'Mar',             iif(sales_month==4, 'Apr',                 iif(sales_month==5, 'May',                     iif(sales_month==6, 'Jun',                         iif(sales_month==7, 'Jul',                             iif(sales_month==8, 'Aug',                                 iif(sales_month==9, 'Sep',                                     iif(sales_month==10, 'Oct',                                         iif(sales_month==11, 'Nov',                                             iif(sales_month==12, 'Dec',                                                 'Invalid Month'                                             )                                         )                                     )                                 )                             )                         )                     )                 )             )         )     ) )) ~> derivedColumn1",
+				"selectNecessaryFields derive(sales_month = iif(sales_month==1, 'Jan',     iif(sales_month==2, 'Feb',         iif(sales_month==3, 'Mar',             iif(sales_month==4, 'Apr',                 iif(sales_month==5, 'May',                     iif(sales_month==6, 'Jun',                         iif(sales_month==7, 'Jul',                             iif(sales_month==8, 'Aug',                                 iif(sales_month==9, 'Sep',                                     iif(sales_month==10, 'Oct',                                         iif(sales_month==11, 'Nov',                                             iif(sales_month==12, 'Dec',                                                 'Invalid Month'                                             )                                         )                                     )                                 )                             )                         )                     )                 )             )         )     ) )) ~> derivedColumn2",
 				"orderbysalesyear sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -344,21 +348,11 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:false,",
-				"     truncate:true,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError',",
-				"     mapColumn(",
-				"          Sales_year,",
-				"          sales_month,",
-				"          Total_sales_amount,",
-				"          Total_quantities_sold,",
-				"          total_transactions,",
-				"          Total_customers,",
-				"          Total_products",
-				"     )) ~> SalesbyMonth",
-				"selectNecessaryFields sink(allowSchemaDrift: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> SalesbyMonth",
+				"derivedColumn2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
