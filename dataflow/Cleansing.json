@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable8",
+						"referenceName": "raw_productDetails",
 						"type": "DatasetReference"
 					},
 					"name": "ProductDetails"

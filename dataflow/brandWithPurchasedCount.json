@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable11",
+						"referenceName": "reports_classificationSold",
 						"type": "DatasetReference"
 					},
 					"name": "ClassificationSoldCount",

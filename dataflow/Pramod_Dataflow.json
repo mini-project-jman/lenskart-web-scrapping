@@ -54,7 +54,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable13",
+						"referenceName": "reports_sales_by_year",
 						"type": "DatasetReference"
 					},
 					"name": "SalesbyYear",

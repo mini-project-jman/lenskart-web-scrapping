@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable11",
+	"name": "reports_classificationSold",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",

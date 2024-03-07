@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable9",
+	"name": "raw_productRefined",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",

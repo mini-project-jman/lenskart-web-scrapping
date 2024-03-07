@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable12",
+						"referenceName": "raw_productsRefined2",
 						"type": "DatasetReference"
 					},
 					"name": "Products"
@@ -20,7 +20,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable11",
+						"referenceName": "reports_classificationSold",
 						"type": "DatasetReference"
 					},
 					"name": "ProductsRevenueHigh"
@@ -34,7 +34,7 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable11",
+						"referenceName": "reports_classificationSold",
 						"type": "DatasetReference"
 					},
 					"name": "products1"
@@ -64,14 +64,14 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable13",
+						"referenceName": "reports_sales_by_year",
 						"type": "DatasetReference"
 					},
 					"name": "RevenuePerCategory"
 				},
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable14",
+						"referenceName": "reports_productREvenueQtyDetails",
 						"type": "DatasetReference"
 					},
 					"name": "RevenuePerProduct"

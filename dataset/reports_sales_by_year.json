@@ -1,5 +1,5 @@
 {
-	"name": "AzureSqlTable13",
+	"name": "reports_sales_by_year",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "ls_azure_sql_lenskart_db",
