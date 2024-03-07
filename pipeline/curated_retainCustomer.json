@@ -1,9 +1,9 @@
 {
-	"name": "facts_dim_pipeline",
+	"name": "curated_retainCustomer",
 	"properties": {
 		"activities": [
 			{
-				"name": "facts_dim_creation",
+				"name": "getMetricsRetainCustomer",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataflow": {
-						"referenceName": "facts_dimentsion_creation",
+						"referenceName": "df_final_metric",
 						"type": "DataFlowReference"
 					},
 					"compute": {
