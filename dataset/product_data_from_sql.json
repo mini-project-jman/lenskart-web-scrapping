@@ -1,0 +1,228 @@
+{
+	"name": "product_data_from_sql",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_lenskart_new",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "restructured_database"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "image_url",
+				"type": "nvarchar"
+			},
+			{
+				"name": "image_url_suffix",
+				"type": "nvarchar"
+			},
+			{
+				"name": "imageUrls",
+				"type": "nvarchar"
+			},
+			{
+				"name": "product_url",
+				"type": "nvarchar"
+			},
+			{
+				"name": "color",
+				"type": "nvarchar"
+			},
+			{
+				"name": "size",
+				"type": "nvarchar"
+			},
+			{
+				"name": "width",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_name_en",
+				"type": "nvarchar"
+			},
+			{
+				"name": "brand_logo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "model_name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_tbyb",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tags",
+				"type": "nvarchar"
+			},
+			{
+				"name": "color_options",
+				"type": "nvarchar"
+			},
+			{
+				"name": "totalColorAvailable",
+				"type": "nvarchar"
+			},
+			{
+				"name": "is_ditto",
+				"type": "nvarchar"
+			},
+			{
+				"name": "classification",
+				"type": "nvarchar"
+			},
+			{
+				"name": "specifications",
+				"type": "nvarchar"
+			},
+			{
+				"name": "wishlistCount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "purchaseCount",
+				"type": "nvarchar"
+			},
+			{
+				"name": "avgRating",
+				"type": "nvarchar"
+			},
+			{
+				"name": "totalNoOfRatings",
+				"type": "nvarchar"
+			},
+			{
+				"name": "hashtagList",
+				"type": "nvarchar"
+			},
+			{
+				"name": "offerName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cmsLinkAndroid",
+				"type": "nvarchar"
+			},
+			{
+				"name": "cmsLinkIos",
+				"type": "nvarchar"
+			},
+			{
+				"name": "arModelAndroidUrl",
+				"type": "nvarchar"
+			},
+			{
+				"name": "arModelIOSUrl",
+				"type": "nvarchar"
+			},
+			{
+				"name": "arModelMsiteAndDesktopUrl",
+				"type": "nvarchar"
+			},
+			{
+				"name": "arModelOriginalUrl",
+				"type": "nvarchar"
+			},
+			{
+				"name": "qty",
+				"type": "nvarchar"
+			},
+			{
+				"name": "frameColorImage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "subCollection",
+				"type": "nvarchar"
+			},
+			{
+				"name": "subCollectionId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "relatedItems",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isCygnusEnabled",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isCashbackApplicable",
+				"type": "nvarchar"
+			},
+			{
+				"name": "searchProductName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "prescriptionType",
+				"type": "nvarchar"
+			},
+			{
+				"name": "occasion",
+				"type": "nvarchar"
+			},
+			{
+				"name": "suited_for",
+				"type": "nvarchar"
+			},
+			{
+				"name": "inclusiveText",
+				"type": "nvarchar"
+			},
+			{
+				"name": "clUsage",
+				"type": "nvarchar"
+			},
+			{
+				"name": "tryOnImageUrl",
+				"type": "nvarchar"
+			},
+			{
+				"name": "offer_image",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isCombo",
+				"type": "nvarchar"
+			},
+			{
+				"name": "comboImageUrl",
+				"type": "nvarchar"
+			},
+			{
+				"name": "comboDescription",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Market_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Lenskart_Price",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Discount_Percentage",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "raw",
+			"table": "ProductData"
+		}
+	}
+}
