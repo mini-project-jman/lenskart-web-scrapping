@@ -135,7 +135,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "raw",
+			"schema": "prep",
 			"table": "ProducrtsRefined2"
 		}
 	}
