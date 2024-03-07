@@ -28,7 +28,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true
+						},
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
@@ -51,7 +54,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "raw_data_azure_sql",
+						"referenceName": "product_data_to_sql",
 						"type": "DatasetReference"
 					}
 				]
@@ -89,7 +92,10 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
+						"writeBehavior": "upsert",
+						"upsertSettings": {
+							"useTempDB": true
+						},
 						"sqlWriterUseTableLock": false,
 						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
@@ -112,7 +118,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "customers_data_azure_sql",
+						"referenceName": "customer_data_to_sql",
 						"type": "DatasetReference"
 					}
 				]
@@ -155,6 +161,7 @@
 							"useTempDB": true
 						},
 						"sqlWriterUseTableLock": false,
+						"tableOption": "autoCreate",
 						"disableMetricsCollection": false
 					},
 					"enableStaging": false,
