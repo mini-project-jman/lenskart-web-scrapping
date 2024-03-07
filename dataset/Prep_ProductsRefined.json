@@ -2,8 +2,11 @@
 	"name": "Prep_ProductsRefined",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "ls_azure_sql_lenskart_db",
+			"referenceName": "ls_lenskart_new",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "restructured_database"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -135,8 +138,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "raw",
-			"table": "ProducrtsRefined2"
+			"schema": "prep",
+			"table": "ProductsRefined"
 		}
 	}
 }
