@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "AzureSqlTable1",
+						"referenceName": "ProductsRefined",
 						"type": "DatasetReference"
 					},
 					"name": "Products"
@@ -19,10 +19,6 @@
 					"name": "Transactions"
 				},
 				{
-					"dataset": {
-						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
-					},
 					"name": "ProductsRevenueHigh"
 				},
 				{
@@ -33,10 +29,6 @@
 					"name": "Customers"
 				},
 				{
-					"dataset": {
-						"referenceName": "AzureSqlTable1",
-						"type": "DatasetReference"
-					},
 					"name": "products1"
 				},
 				{
@@ -63,17 +55,9 @@
 					"name": "SoldTotalQtyCategoryby"
 				},
 				{
-					"dataset": {
-						"referenceName": "AzureSqlTable2",
-						"type": "DatasetReference"
-					},
 					"name": "RevenuePerCategory"
 				},
 				{
-					"dataset": {
-						"referenceName": "AzureSqlTable2",
-						"type": "DatasetReference"
-					},
 					"name": "RevenuePerProduct"
 				},
 				{
@@ -203,6 +187,15 @@
 				},
 				{
 					"name": "Sorting1"
+				},
+				{
+					"name": "derivedColumn3"
+				},
+				{
+					"name": "NecessaryFields4"
+				},
+				{
+					"name": "derivedColumn4"
 				}
 			],
 			"scriptLines": [
@@ -284,9 +277,7 @@
 				"          Discount_Percentage as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> ProductsRevenueHigh",
+				"     validateSchema: false) ~> ProductsRevenueHigh",
 				"source(output(",
 				"          customer_id as string,",
 				"          first_name as string,",
@@ -331,9 +322,7 @@
 				"          Discount_Percentage as integer",
 				"     ),",
 				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> products1",
+				"     validateSchema: false) ~> products1",
 				"source(output(",
 				"          customer_id as string,",
 				"          product_id as string,",
@@ -455,7 +444,7 @@
 				"addYearRevenue aggregate(groupBy(Year,",
 				"          classification),",
 				"     TotalYearlyRevenue = sum(Revenue)) ~> TotalrevenueYearly",
-				"addYearMonth aggregate(groupBy(Month,",
+				"derivedColumn4 aggregate(groupBy(MonthName,",
 				"          classification),",
 				"     TotalMonthlyRevenue = sum(Revenue)) ~> totalRevenueMonth",
 				"Transactions2, Products join(product_id == id,",
@@ -474,8 +463,68 @@
 				"     TotalProducts = sum(quantity)) ~> TotalProductsPerYear",
 				"CategoryMonthlyRevenue sort(desc(Year, true),",
 				"     asc(Month, true)) ~> RevenueMonthYear",
-				"totalRevenueMonth sort(asc(Month, true)) ~> Sorting",
+				"totalRevenueMonth sort(asc(MonthName, true)) ~> Sorting",
 				"TotalrevenueYearly sort(asc(Year, true)) ~> Sorting1",
+				"RevenueMonthYear derive(MonthName = iif(Month==1, 'Jan',\r",
+				"    iif(Month==2, 'Feb',\r",
+				"        iif(Month==3, 'Mar',\r",
+				"            iif(Month==4, 'Apr',\r",
+				"                iif(Month==5, 'May',\r",
+				"                    iif(Month==6, 'Jun',\r",
+				"                        iif(Month==7, 'Jul',\r",
+				"                            iif(Month==8, 'Aug',\r",
+				"                                iif(Month==9, 'Sep',\r",
+				"                                    iif(Month==10, 'Oct',\r",
+				"                                        iif(Month==11, 'Nov',\r",
+				"                                            iif(Month==12, 'Dec',\r",
+				"                                                'Invalid Month'\r",
+				"                                            )\r",
+				"                                        )\r",
+				"                                    )\r",
+				"                                )\r",
+				"                            )\r",
+				"                        )\r",
+				"                    )\r",
+				"                )\r",
+				"            )\r",
+				"        )\r",
+				"    )\r",
+				") \r",
+				") ~> derivedColumn3",
+				"derivedColumn3 select(mapColumn(",
+				"          Year,",
+				"          MonthName,",
+				"          classification,",
+				"          TotalRevenue",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> NecessaryFields4",
+				"addYearMonth derive(MonthName = iif(Month==1, 'Jan',\r",
+				"    iif(Month==2, 'Feb',\r",
+				"        iif(Month==3, 'Mar',\r",
+				"            iif(Month==4, 'Apr',\r",
+				"                iif(Month==5, 'May',\r",
+				"                    iif(Month==6, 'Jun',\r",
+				"                        iif(Month==7, 'Jul',\r",
+				"                            iif(Month==8, 'Aug',\r",
+				"                                iif(Month==9, 'Sep',\r",
+				"                                    iif(Month==10, 'Oct',\r",
+				"                                        iif(Month==11, 'Nov',\r",
+				"                                            iif(Month==12, 'Dec',\r",
+				"                                                'Invalid Month'\r",
+				"                                            )\r",
+				"                                        )\r",
+				"                                    )\r",
+				"                                )\r",
+				"                            )\r",
+				"                        )\r",
+				"                    )\r",
+				"                )\r",
+				"            )\r",
+				"        )\r",
+				"    )\r",
+				") \r",
+				") ~> derivedColumn4",
 				"SoldTotalQtyCategory sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -488,24 +537,14 @@
 				"     errorHandlingOption: 'stopOnFirstError') ~> SoldTotalQtyCategoryby",
 				"SoldRevenueByCategory sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> RevenuePerCategory",
+				"     format: 'table') ~> RevenuePerCategory",
 				"ProductRevQty sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     deletable:false,",
-				"     insertable:true,",
-				"     updateable:false,",
-				"     upsertable:false,",
-				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     errorHandlingOption: 'stopOnFirstError') ~> RevenuePerProduct",
+				"     format: 'table') ~> RevenuePerProduct",
 				"Sorting1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
@@ -526,7 +565,7 @@
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
 				"     errorHandlingOption: 'stopOnFirstError') ~> MonthlyRevenue",
-				"RevenueMonthYear sink(allowSchemaDrift: true,",
+				"NecessaryFields4 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     deletable:false,",
 				"     insertable:true,",
