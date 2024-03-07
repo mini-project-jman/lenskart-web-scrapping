@@ -8,6 +8,9 @@
 		"ls_azure_sql_lenskart_db_connectionString": {
 			"value": ""
 		},
+		"ls_lenskart_new_connectionString": {
+			"value": ""
+		},
 		"ls_lenskart_raw_blob_connectionString": {
 			"value": ""
 		}
